@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { Send, Sparkles } from 'lucide-react';
 import { AppShell } from '@/components/AppShell';
 import { locations, Role } from '@/data/mock';
@@ -73,6 +74,7 @@ const titleByRole: Record<Role, { en: string; ar: string }> = {
 
 export function RoleAiAssistant({ role }: { role: Role }) {
   const { locale, tx, pick } = useLocale();
+  const pathname = usePathname();
   const cart = useMasaarStore((state) => state.cart);
   const bookings = useMasaarStore((state) => state.bookings);
   const submissions = useMasaarStore((state) => state.submissions);
@@ -85,11 +87,13 @@ export function RoleAiAssistant({ role }: { role: Role }) {
   const [messages, setMessages] = useState<Message[]>([{ from: 'ai', text: tx(introByRole[role]) }]);
   const [draft, setDraft] = useState('');
   const [loading, setLoading] = useState(false);
+  const [typingText, setTypingText] = useState('');
   const [error, setError] = useState('');
 
   const context = {
     role,
     locale,
+    page: pathname,
     cart: cart.map((offer) => tx(offer.title)),
     bookings: bookings.map((booking) => ({ locationId: booking.locationId, status: booking.status, nights: booking.nights, amount: booking.amount })),
     tenders: tenders.map((tender) => ({ title: tx(tender.title), locationId: tender.locationId, budgetUsd: tender.budgetUsd, deadlineDays: tender.deadlineDays, status: tender.status })),
@@ -116,6 +120,7 @@ export function RoleAiAssistant({ role }: { role: Role }) {
     const userText = text.trim();
     setError('');
     setLoading(true);
+    setTypingText('');
     setDraft('');
     setMessages((items) => [...items, { from: 'you', text: userText }]);
 
@@ -125,7 +130,20 @@ export function RoleAiAssistant({ role }: { role: Role }) {
         prompt: userText,
         conversation: messages.slice(-6),
       });
+      let index = 0;
+      setTypingText('');
+      await new Promise<void>((resolve) => {
+        const timer = window.setInterval(() => {
+          index += Math.max(2, Math.ceil(answer.length / 60));
+          setTypingText(answer.slice(0, index));
+          if (index >= answer.length) {
+            window.clearInterval(timer);
+            resolve();
+          }
+        }, 18);
+      });
       setMessages((items) => [...items, { from: 'ai', text: answer }]);
+      setTypingText('');
     } catch {
       setError(pick('AI failed safely and returned fallback guidance.', 'تعذر الاتصال بالذكاء وتم عرض إرشاد احتياطي آمن.'));
     } finally {
@@ -135,7 +153,7 @@ export function RoleAiAssistant({ role }: { role: Role }) {
 
   return (
     <AppShell role={role}>
-      <section className="grid min-h-[calc(100vh-160px)] content-between gap-6">
+      <section className="grid min-h-[calc(100dvh-190px)] content-between gap-6">
         <div>
           <h1 className="masaar-title flex items-center gap-2"><Sparkles className="text-[#dd6534]" /> {tx(titleByRole[role])}</h1>
           <p className="eyebrow mt-3 text-emerald-700">Gemini 1.5 Flash - {pick('Role-aware prompt engine', 'محرك أوامر حسب الدور')}</p>
@@ -145,7 +163,11 @@ export function RoleAiAssistant({ role }: { role: Role }) {
                 {message.text}
               </p>
             ))}
-            {loading && <p className="rounded-lg border border-[var(--line)] bg-[var(--card)] p-4 text-sm font-bold">{pick('Generating role-specific answer...', 'جار توليد إجابة مخصصة للدور...')}</p>}
+            {loading && (
+              <p className="max-w-[86%] rounded-lg border border-[var(--line)] bg-[var(--card)] p-4 text-sm font-bold leading-6 text-[var(--navy)]">
+                {typingText || pick('Masaar is reading the forecast context...', 'مسار يقرأ سياق التوقعات...')}
+              </p>
+            )}
             {error && <p className="rounded-lg border border-[var(--line)] bg-[var(--card)] p-4 text-sm font-bold text-[#dd6534]">{error}</p>}
           </div>
           <div className="mt-5 flex flex-wrap gap-2">

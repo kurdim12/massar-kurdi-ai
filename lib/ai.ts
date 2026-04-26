@@ -45,8 +45,13 @@ const rolePrompts: Record<AiMode, string> = {
   ].join(' '),
 };
 
+function isArabicText(value: unknown) {
+  return /[\u0600-\u06ff]/.test(String(value ?? ''));
+}
+
 export async function askMasaarAI(mode: AiMode, context: Record<string, unknown>, apiKey?: string) {
   const resolvedApiKey = apiKey?.trim() || process.env.NEXT_PUBLIC_GEMINI_API_KEY?.trim();
+  const promptLanguage = isArabicText(context.prompt) ? 'Arabic' : 'English';
   if (!resolvedApiKey) return mockAi(mode, context);
 
   try {
@@ -54,7 +59,7 @@ export async function askMasaarAI(mode: AiMode, context: Record<string, unknown>
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        contents: [{ parts: [{ text: `${rolePrompts[mode]}\n\nContext JSON:\n${JSON.stringify(context)}\n\nInstructions:\n- Answer in the requested locale when provided.\n- Keep the response concise and operational.\n- Use bullets only when useful.\n- Do not invent real-time data; treat supplied data as MASAAR local intelligence.\n- End with one next action the user can take in MASAAR.` }] }],
+        contents: [{ parts: [{ text: `${rolePrompts[mode]}\n\nContext JSON:\n${JSON.stringify(context)}\n\nInstructions:\n- Detect the user's prompt language and answer in the same language. The detected language is ${promptLanguage}.\n- If the user writes Arabic, answer fully in natural Arabic. If the user writes English, answer fully in English.\n- Use MASAAR-specific context: Jordan destinations, forecasts, offers, tenders, bookings, and the current user role.\n- Keep the response concise, practical, and operational.\n- Use bullets only when useful.\n- Do not invent real-time data; treat supplied data as MASAAR local intelligence.\n- End with one next action the user can take in MASAAR.` }] }],
       }),
     });
     const data = await response.json();
@@ -66,11 +71,21 @@ export async function askMasaarAI(mode: AiMode, context: Record<string, unknown>
 
 export function mockAi(mode: AiMode, context: Record<string, unknown>) {
   const location = String(context.location ?? 'Jordan');
-  const messages = {
+  const ar = isArabicText(context.prompt) || context.locale === 'ar';
+  const messages: Record<AiMode, string> = ar ? {
+    itinerary: `المسار المقترح: ابدأ مبكرا في ${location}، تجنب نافذة الازدحام بين 12:00 و15:00، وأضف وجهة قريبة أقل استخداما لتخفيف الضغط.`,
+    'business-offer': `توصية العرض: أطلق حزمة أيام عمل لمدة 48 ساعة في ${location} مع حد سعة واضح للحفاظ على جودة الخدمة.`,
+    policy: 'توصية سياسة: انشر عطاءات موجهة في المناطق ذات فجوة العرض، وحفز الوجهات الأقل استخداما، وراقب سرعة الحجوزات أسبوعيا.',
+    investor: 'إشارة استثمار: أعط الأولوية للمناطق التي يكون فيها نمو الطلب أعلى من العرض مع ثقة مخاطرة تتجاوز 75%.',
+    'traveller-chat': `خطط لزيارة ${location} مبكرا، وأضف وجهة أهدأ قريبة، وتجنب فترة 12:00-15:00. الخطوة التالية: أضف عرضا مناسبا إلى الرحلة.`,
+    'investor-chat': `إشارة الاستثمار في ${location}: قارن نمو الطلب بفجوة العرض ثم راجع العطاء المناسب قبل تخصيص الميزانية. الخطوة التالية: افتح صفحة التوقعات.`,
+    'business-chat': `إجراء تشغيلي في ${location}: انشر عرضا قصير المدة ومحدود السعة، راقب سرعة الحجز، وعدل متوسط السعر قبل ذروة الطلب. الخطوة التالية: أنشئ عرضا.`,
+    'government-chat': `إجراء حكومي في ${location}: استخدم العطاءات والعروض الموجهة لنقل الطلب من الوجهات المزدحمة إلى المناطق الأقل استخداما. الخطوة التالية: انشر عطاء موجها.`,
+  } : {
     itinerary: `Recommended route: start early in ${location}, avoid the 12:00-15:00 crowd window, and add one underutilized nearby destination to reduce pressure.`,
     'business-offer': `Offer recommendation: launch a 48-hour weekday bundle for ${location} with transfer included and a capacity cap to protect service quality.`,
-    policy: `Policy recommendation: publish targeted tenders in high-gap regions, incentivize underutilized areas, and monitor booking velocity weekly.`,
-    investor: `Investor insight: prioritize regions where demand growth is above supply and risk confidence remains above 75%.`,
+    policy: 'Policy recommendation: publish targeted tenders in high-gap regions, incentivize underutilized areas, and monitor booking velocity weekly.',
+    investor: 'Investor insight: prioritize regions where demand growth is above supply and risk confidence remains above 75%.',
     'traveller-chat': `Plan ${location} early, add one quieter nearby destination, and avoid the 12:00-15:00 crowd window. Next action: add a matching offer to Trip.`,
     'investor-chat': `Investment signal for ${location}: compare demand growth against supply gap, then open the matching tender before committing budget. Next action: review Forecast.`,
     'business-chat': `Business action for ${location}: publish a short capacity-limited offer, watch booking velocity, and adjust ADR before peak demand. Next action: generate an offer.`,

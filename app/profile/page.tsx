@@ -1,43 +1,43 @@
 'use client';
 
 import Link from 'next/link';
-import { Bot, ChevronRight, Globe2, Info, LogIn, Sparkles, Sun, UserRound } from 'lucide-react';
+import { Bot, ChevronRight, Globe2, Info, LogOut, Sparkles, Sun, UserRound } from 'lucide-react';
 import { AppShell } from '@/components/AppShell';
 import { Role } from '@/data/mock';
 import { useLocale } from '@/lib/i18n';
 import { useMasaarStore } from '@/lib/store';
 
-const names: Record<Role, string> = {
-  traveller: 'Layla Hassan',
-  investor: 'Khaled Amaireh',
-  business: 'Rose City Guesthouse',
-  government: 'Ministry Operations',
+const names: Record<Role, { en: string; ar: string }> = {
+  traveller: { en: 'Layla Hassan', ar: 'ليلى حسن' },
+  investor: { en: 'Khaled Amaireh', ar: 'خالد العمايرة' },
+  business: { en: 'Rose City Guesthouse', ar: 'بيت ضيافة المدينة الوردية' },
+  government: { en: 'Ministry Operations', ar: 'عمليات الوزارة' },
 };
 
-const actions: Record<Role, { label: string; href: string }[]> = {
+const actionLabels: Record<Role, { label: { en: string; ar: string }; href: string }[]> = {
   traveller: [
-    { label: 'Trip cart', href: '/traveller/cart' },
-    { label: 'AI advisor', href: '/traveller/ai' },
-    { label: 'Discover', href: '/traveller' },
-    { label: 'Permits', href: '/traveller' },
+    { label: { en: 'Trip cart', ar: 'سلة الرحلة' }, href: '/traveller/cart' },
+    { label: { en: 'AI advisor', ar: 'المساعد الذكي' }, href: '/traveller/ai' },
+    { label: { en: 'Discover', ar: 'اكتشف' }, href: '/traveller' },
+    { label: { en: 'Permits', ar: 'التصاريح' }, href: '/traveller' },
   ],
   investor: [
-    { label: 'My submissions', href: '/investor/tenders' },
-    { label: 'Forecast', href: '/investor/forecast' },
-    { label: 'Opportunity map', href: '/investor' },
-    { label: 'Tenders', href: '/investor/tenders' },
+    { label: { en: 'My submissions', ar: 'طلباتي' }, href: '/investor/tenders' },
+    { label: { en: 'Forecast', ar: 'التوقعات' }, href: '/investor/forecast' },
+    { label: { en: 'Opportunity map', ar: 'خريطة الفرص' }, href: '/investor' },
+    { label: { en: 'Tenders', ar: 'العطاءات' }, href: '/investor/tenders' },
   ],
   business: [
-    { label: 'Bookings', href: '/business/bookings' },
-    { label: 'Create offer', href: '/business/ai' },
-    { label: 'Dashboard', href: '/business' },
-    { label: 'AI advisor', href: '/business/ai' },
+    { label: { en: 'Bookings', ar: 'الحجوزات' }, href: '/business/bookings' },
+    { label: { en: 'Create offer', ar: 'إنشاء عرض' }, href: '/business/ai' },
+    { label: { en: 'Dashboard', ar: 'لوحة التحكم' }, href: '/business' },
+    { label: { en: 'AI advisor', ar: 'المساعد الذكي' }, href: '/business/ai' },
   ],
   government: [
-    { label: 'National map', href: '/government' },
-    { label: 'Tender admin', href: '/government/tenders' },
-    { label: 'Policy panel', href: '/government' },
-    { label: 'Impact', href: '/government' },
+    { label: { en: 'National map', ar: 'الخريطة الوطنية' }, href: '/government' },
+    { label: { en: 'Tender admin', ar: 'إدارة العطاءات' }, href: '/government/tenders' },
+    { label: { en: 'Policy panel', ar: 'لوحة السياسات' }, href: '/government' },
+    { label: { en: 'Impact', ar: 'الأثر' }, href: '/government' },
   ],
 };
 
@@ -45,82 +45,88 @@ export default function ProfilePage() {
   const role = (useMasaarStore((state) => state.role) ?? 'traveller') as Role;
   const theme = useMasaarStore((state) => state.theme);
   const toggleTheme = useMasaarStore((state) => state.toggleTheme);
-  const { locale, setLocale } = useLocale();
+  const { locale, setLocale, tx, pick, t } = useLocale();
   const cart = useMasaarStore((state) => state.cart);
   const bookings = useMasaarStore((state) => state.bookings);
   const submissions = useMasaarStore((state) => state.submissions);
 
   const stats = role === 'traveller'
-    ? [['Favourites', 3], ['In trip', cart.length], ['Interests', 4]]
+    ? [[pick('Favourites', 'المفضلة'), 3], [pick('In trip', 'في الرحلة'), cart.length], [pick('Interests', 'الاهتمامات'), 4]]
     : role === 'investor'
-      ? [['Submissions', submissions.length], ['Submitted', submissions.filter((item) => item.status === 'submitted').length], ['Capital', 'Yes']]
+      ? [[pick('Submissions', 'الطلبات'), submissions.length], [pick('Submitted', 'المقدمة'), submissions.filter((item) => item.status === 'submitted').length], [pick('Capital', 'رأس المال'), pick('Ready', 'جاهز')]]
       : role === 'business'
-        ? [['Bookings', bookings.length], ['Pending', bookings.filter((item) => item.status === 'pending').length], ['Offers', 3]]
-        : [['Regions', 8], ['Alerts', 3], ['Tenders', 3]];
+        ? [[pick('Bookings', 'الحجوزات'), bookings.length], [pick('Pending', 'المعلقة'), bookings.filter((item) => item.status === 'pending').length], [pick('Offers', 'العروض'), 3]]
+        : [[pick('Regions', 'المناطق'), 8], [pick('Alerts', 'التنبيهات'), 3], [pick('Tenders', 'العطاءات'), 3]];
+
+  const displayName = tx(names[role]);
+  const initials = displayName.split(/\s+/).map((part) => part[0]).slice(0, 2).join('');
 
   return (
     <AppShell role={role}>
       <section className="grid gap-6">
-        <h1 className="masaar-title uppercase">Profile</h1>
-        <section className="flex items-start gap-6">
-          <div className="grid size-16 shrink-0 place-items-center rounded-full text-3xl font-black text-[#dd6534]">{names[role].split(' ').map((part) => part[0]).slice(0, 2).join('')}</div>
+        <h1 className="masaar-title uppercase">{t('profile')}</h1>
+        <section className="flex items-start gap-4 rounded-3xl border border-[var(--line)] bg-[var(--card)] p-4">
+          <div className="grid size-16 shrink-0 place-items-center rounded-full bg-[var(--surface)] text-3xl font-black text-[#dd6534]">{initials}</div>
           <div className="min-w-0">
-            <h2 className="text-2xl font-black leading-none text-[#dd7332]">{names[role]}</h2>
-            <p className="text-sm font-semibold text-[#425676]">Not signed in</p>
-            <p className="eyebrow mt-3 text-[#dd6534]">{role} <span className="ml-2 rounded-full bg-[#f3dfcf] px-2 py-1 text-[9px]">MASAAR</span></p>
+            <h2 className="break-words text-2xl font-black leading-none text-[#dd7332]">{displayName}</h2>
+            <p className="mt-1 text-sm font-semibold text-[var(--muted)]">{pick('Not signed in', 'غير مسجل الدخول')}</p>
+            <p className="eyebrow mt-3 text-[#dd6534]">{t(role)} <span className="mx-2 rounded-full bg-[#f3dfcf] px-2 py-1 text-[9px] text-[#8c402b]">MASAAR</span></p>
           </div>
         </section>
 
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-3">
           {stats.map(([label, value]) => (
-            <article key={label} className="section-line py-3">
-              <p className="eyebrow">{label}</p>
-              <strong className="text-[30px] font-black leading-none">{String(value)}</strong>
+            <article key={String(label)} className="rounded-2xl border border-[var(--line)] bg-[var(--card)] p-3">
+              <p className="eyebrow mb-2">{label}</p>
+              <strong className="block break-words text-[26px] font-black leading-none text-[var(--navy)]">{String(value)}</strong>
             </article>
           ))}
         </div>
 
         <section>
-          <p className="eyebrow mb-3">Quick actions</p>
+          <p className="eyebrow mb-3">{pick('Quick actions', 'إجراءات سريعة')}</p>
           <div className="grid grid-cols-2 gap-2">
-            {actions[role].map((action) => (
-              <Link key={action.label} href={action.href} className="section-line flex min-h-12 items-center gap-3 px-3 py-3 text-sm font-black">
-                <Sparkles size={15} className="text-[#dd6534]" /> {action.label}
+            {actionLabels[role].map((action) => (
+              <Link key={action.label.en} href={action.href} className="flex min-h-14 items-center gap-3 rounded-2xl border border-[var(--line)] bg-[var(--card)] px-3 py-3 text-sm font-black text-[var(--navy)] active:scale-[.99]">
+                <Sparkles size={15} className="shrink-0 text-[#dd6534]" /> <span>{tx(action.label)}</span>
               </Link>
             ))}
           </div>
         </section>
 
         <section>
-          <p className="eyebrow mb-3">Settings</p>
-          <button onClick={() => setLocale(locale === 'ar' ? 'en' : 'ar')} className="section-line flex w-full items-center justify-between py-4 text-left">
-            <span className="flex items-center gap-3 font-black"><Globe2 /> Language</span>
-            <span className="text-sm font-semibold text-[#425676]">{locale === 'ar' ? 'Arabic' : 'English'}</span>
+          <p className="eyebrow mb-3">{pick('Settings', 'الإعدادات')}</p>
+          <button onClick={() => setLocale(locale === 'ar' ? 'en' : 'ar')} className="flex min-h-14 w-full items-center justify-between gap-4 border-t border-[var(--line)] py-4 text-start text-[var(--navy)]">
+            <span className="flex items-center gap-3 font-black"><Globe2 /> {t('language')}</span>
+            <span className="text-sm font-semibold text-[var(--muted)]">{locale === 'ar' ? 'العربية' : 'English'}</span>
           </button>
-          <button onClick={toggleTheme} className="section-line flex w-full items-center justify-between py-4 text-left">
-            <span className="flex items-center gap-3 font-black"><Sun /> Theme</span>
-            <span className="text-sm font-semibold text-[#425676]">{theme === 'dark' ? 'Dark' : 'Light'}</span>
+          <button onClick={toggleTheme} className="flex min-h-14 w-full items-center justify-between gap-4 border-t border-[var(--line)] py-4 text-start text-[var(--navy)]">
+            <span className="flex items-center gap-3 font-black"><Sun /> {t('theme')}</span>
+            <span className="text-sm font-semibold text-[var(--muted)]">{theme === 'dark' ? pick('Dark', 'داكن') : pick('Light', 'فاتح')}</span>
           </button>
-          <div className="section-line flex w-full items-center justify-between py-4">
-            <span className="flex items-center gap-3 font-black"><Bot className="text-[#dd6534]" /> AI assistant</span>
-            <span className="text-sm font-semibold text-emerald-700">Gemini enabled</span>
+          <div className="flex min-h-14 w-full items-center justify-between gap-4 border-t border-[var(--line)] py-4">
+            <span className="flex items-center gap-3 font-black"><Bot className="text-[#dd6534]" /> {pick('AI assistant', 'المساعد الذكي')}</span>
+            <span className="text-sm font-semibold text-emerald-700">{pick('Gemini enabled', 'Gemini مفعل')}</span>
           </div>
         </section>
 
         <section>
-          <p className="eyebrow mb-3">Account</p>
+          <p className="eyebrow mb-3">{pick('Account', 'الحساب')}</p>
           {[
-            ['About Masaar', Info, '/'],
-            ['Switch role', UserRound, '/'],
-            ['Sign in', LogIn, '/'],
-          ].map(([label, Icon, href]) => (
-            <Link key={label as string} href={href as string} className="section-line flex items-center justify-between py-4 font-black">
-              <span className="flex items-center gap-3"><Icon className="text-[#dd6534]" size={19} />{label as string}</span>
-              <ChevronRight size={16} />
-            </Link>
-          ))}
+            { label: pick('About Masaar', 'عن مسار'), icon: Info, href: '/about' },
+            { label: pick('Switch role', 'تغيير الدور'), icon: UserRound, href: '/' },
+            { label: pick('Sign out', 'تسجيل الخروج'), icon: LogOut, href: '/' },
+          ].map((item) => {
+            const Icon = item.icon;
+            return (
+              <Link key={item.label} href={item.href} className="flex min-h-14 items-center justify-between gap-4 border-t border-[var(--line)] py-4 font-black text-[var(--navy)]">
+                <span className="flex items-center gap-3"><Icon className="text-[#dd6534]" size={19} />{item.label}</span>
+                <ChevronRight size={16} className="rtl:rotate-180" />
+              </Link>
+            );
+          })}
         </section>
-        <p className="eyebrow py-6 text-center">Masaar - v0.4 - Jordan</p>
+        <p className="eyebrow py-6 text-center">Masaar / v0.4 / Jordan</p>
       </section>
     </AppShell>
   );

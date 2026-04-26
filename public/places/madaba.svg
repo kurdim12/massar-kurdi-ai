@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Madaba mosaic">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#ead7bf"/>
+      <stop offset="1" stop-color="#9b7655"/>
+    </linearGradient>
+    <pattern id="mosaic" width="72" height="72" patternUnits="userSpaceOnUse">
+      <rect width="72" height="72" fill="#c8a96a"/>
+      <rect x="4" y="4" width="26" height="26" fill="#0b1f3a" opacity=".78"/>
+      <rect x="38" y="6" width="28" height="28" fill="#f7f3ef" opacity=".86"/>
+      <rect x="8" y="40" width="24" height="24" fill="#d8b4a0"/>
+      <rect x="42" y="42" width="24" height="24" fill="#6f8b78"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <path d="M-80 740C180 560 420 480 652 515c200 30 350-3 628-170v455H-80z" fill="url(#mosaic)" opacity=".9"/>
+  <circle cx="620" cy="298" r="180" fill="#f7f3ef" opacity=".72"/>
+  <circle cx="620" cy="298" r="118" fill="#0b1f3a" opacity=".16"/>
+  <path d="M508 358c42-96 90-150 145-162 46-10 90 8 132 54-38 3-73 14-104 33-63 39-105 82-173 75z" fill="#0b1f3a" opacity=".5"/>
+  <path d="M0 0h1200v800H0z" fill="#0b1f3a" opacity=".1"/>
+</svg>

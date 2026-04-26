@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Jerash Roman columns">
+  <defs>
+    <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#f6d6a6"/>
+      <stop offset="1" stop-color="#f7f3ef"/>
+    </linearGradient>
+    <linearGradient id="stone" x1="0" x2="1">
+      <stop offset="0" stop-color="#8f765c"/>
+      <stop offset="1" stop-color="#d4bd97"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#sky)"/>
+  <path d="M0 565c170-70 302-92 456-63 152 29 264 1 372-38 134-48 242-20 372 66v270H0z" fill="#c8a96a"/>
+  <path d="M0 620c208-76 402-62 586-16 238 59 401 14 614-58v254H0z" fill="#92734d"/>
+  <g fill="url(#stone)">
+    <rect x="178" y="215" width="56" height="365" rx="13"/>
+    <rect x="292" y="185" width="62" height="420" rx="14"/>
+    <rect x="420" y="235" width="52" height="350" rx="12"/>
+    <rect x="756" y="212" width="58" height="386" rx="13"/>
+    <rect x="884" y="174" width="64" height="438" rx="14"/>
+    <rect x="1010" y="235" width="52" height="360" rx="12"/>
+    <rect x="142" y="180" width="370" height="38" rx="6"/>
+    <rect x="722" y="174" width="374" height="38" rx="6"/>
+    <rect x="110" y="600" width="1008" height="36" rx="8"/>
+  </g>
+  <path d="M0 0h1200v800H0z" fill="#0b1f3a" opacity=".12"/>
+</svg>

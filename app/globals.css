@@ -6,7 +6,7 @@
   --surface: #f8f4ef;
   --card: #fffaf5;
   --line: #d6c9bd;
-  --muted: #425676;
+  --muted: #243754;
   --navy: #0b1f3a;
   --gold: #c8a96a;
   --rose: #d8b4a0;
@@ -97,6 +97,19 @@ select {
   font-weight: 900;
   letter-spacing: .34em;
   text-transform: uppercase;
+}
+
+button,
+a {
+  color: inherit;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
 }
 
 .section-line {

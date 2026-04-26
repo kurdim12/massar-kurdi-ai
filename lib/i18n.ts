@@ -52,7 +52,7 @@ export const dictionary = {
     notifications: 'الإشعارات',
     theme: 'النمط',
     language: 'اللغة',
-    signIn: 'دخول',
+    signIn: 'تسجيل الدخول',
     openSystem: 'افتح النظام',
     accessProfile: 'دخول وطني',
     loading: 'جار التحميل',

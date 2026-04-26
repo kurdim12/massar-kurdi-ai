@@ -136,7 +136,7 @@ export const locations: Location[] = [
     seasonality: [42, 46, 61, 78, 86, 72, 62, 60, 76, 84, 68, 48],
     events: [1, 2, 3, 5, 7, 5, 6, 6, 5, 4, 2, 1],
     weatherComfort: [58, 63, 76, 88, 94, 82, 66, 65, 84, 92, 76, 60],
-    image: 'https://images.unsplash.com/photo-1586267130724-03fc4e97b721?auto=format&fit=crop&w=1400&q=82',
+    image: '/places/jerash.svg',
   },
   {
     id: 'madaba',
@@ -151,7 +151,7 @@ export const locations: Location[] = [
     seasonality: [40, 43, 55, 68, 76, 67, 58, 55, 69, 77, 62, 46],
     events: [1, 1, 2, 4, 5, 3, 2, 2, 4, 5, 2, 1],
     weatherComfort: [62, 68, 82, 90, 88, 64, 48, 47, 76, 90, 82, 68],
-    image: 'https://images.unsplash.com/photo-1578923731306-594b7d81cf53?auto=format&fit=crop&w=1400&q=82',
+    image: '/places/madaba.svg',
   },
   {
     id: 'karak',
