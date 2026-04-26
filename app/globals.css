@@ -1,0 +1,192 @@
+@import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+
+:root {
+  --cream: #f7f3ef;
+  --surface: #f8f4ef;
+  --card: #fffaf5;
+  --line: #d6c9bd;
+  --muted: #425676;
+  --navy: #0b1f3a;
+  --gold: #c8a96a;
+  --rose: #d8b4a0;
+}
+
+[data-theme="dark"] {
+  --cream: #070b12;
+  --surface: #0b111c;
+  --card: #111a29;
+  --line: #263247;
+  --muted: #a7b2c6;
+  --navy: #f5f1ea;
+  --gold: #d6b66f;
+  --rose: #d8b4a0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  overflow-x: hidden;
+  background: var(--cream);
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  background: var(--cream);
+  color: var(--navy);
+  font-family: Manrope, Cairo, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+a,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button,
+a {
+  touch-action: manipulation;
+}
+
+input,
+textarea,
+select {
+  min-width: 0;
+  font-size: 16px;
+}
+
+[dir="rtl"] body,
+[dir="rtl"] {
+  font-family: Cairo, Manrope, system-ui, sans-serif;
+}
+
+.glass-card {
+  background: color-mix(in srgb, var(--card) 86%, transparent);
+  border: 1px solid var(--line);
+  box-shadow: 0 14px 36px rgba(11, 31, 58, .07);
+  backdrop-filter: blur(14px);
+}
+
+.government-hero {
+  background:
+    linear-gradient(180deg, rgba(11, 31, 58, .16), rgba(11, 31, 58, .9)),
+    url("https://images.unsplash.com/photo-1580834341580-8c17a3a630ca?auto=format&fit=crop&w=1800&q=82");
+  background-position: center;
+  background-size: cover;
+}
+
+.leaflet-container {
+  border-radius: .55rem;
+  min-height: 292px;
+  width: 100%;
+}
+
+.eyebrow {
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .34em;
+  text-transform: uppercase;
+}
+
+.section-line {
+  border-top: 1px solid var(--line);
+}
+
+.masaar-title {
+  color: var(--navy);
+  font-size: 28px;
+  font-weight: 950;
+  letter-spacing: -.03em;
+  line-height: .96;
+}
+
+.numeric {
+  color: var(--navy);
+  font-size: 42px;
+  font-weight: 950;
+  letter-spacing: -.07em;
+  line-height: .9;
+}
+
+.pill {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--navy);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .26em;
+  padding: .45rem .8rem;
+  text-transform: uppercase;
+}
+
+.pill-active {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: var(--cream);
+}
+
+.line-button {
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: .55rem;
+  color: var(--navy);
+  display: inline-flex;
+  font-size: 11px;
+  font-weight: 950;
+  justify-content: center;
+  letter-spacing: .24em;
+  min-height: 44px;
+  padding: .7rem 1rem;
+  text-transform: uppercase;
+}
+
+.masaar-app {
+  min-height: 100dvh;
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+}
+
+[data-theme="dark"] .leaflet-tile {
+  filter: invert(1) hue-rotate(180deg) brightness(.78) contrast(1.05);
+}
+
+.primary-button {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: var(--cream);
+}
+
+.muted-text {
+  color: var(--muted);
+}
+
+.soft-panel {
+  background: var(--card);
+  border: 1px solid var(--line);
+}
+
+.warm-accent {
+  color: #dd7332;
+}
+
+[data-theme="dark"] .warm-accent {
+  color: var(--gold);
+}

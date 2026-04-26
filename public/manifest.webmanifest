@@ -1,0 +1,17 @@
+{
+  "name": "MASAAR - Jordan National Tourism Intelligence Platform",
+  "short_name": "MASAAR",
+  "description": "Jordan's national tourism intelligence platform for travellers, investors, businesses, and government teams.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F7F3EF",
+  "theme_color": "#0B1F3A",
+  "icons": [
+    {
+      "src": "/icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

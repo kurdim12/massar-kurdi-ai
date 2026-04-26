@@ -1,0 +1,9 @@
+<svg width="720" height="180" viewBox="0 0 720 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="720" height="180" rx="36" fill="#0B1F3A"/>
+  <path d="M88 118C118 72 154 50 196 52C225 53 245 68 263 86C282 105 299 122 326 119C357 116 378 91 397 66" stroke="#C8A96A" stroke-width="14" stroke-linecap="round"/>
+  <circle cx="196" cy="52" r="11" fill="#D8B4A0"/>
+  <circle cx="326" cy="119" r="11" fill="#D8B4A0"/>
+  <path d="M397 66L397 42L420 54L397 66Z" fill="#C8A96A"/>
+  <text x="470" y="78" fill="#F7F3EF" font-family="Arial, Helvetica, sans-serif" font-size="44" font-weight="800" letter-spacing="10">MASAAR</text>
+  <text x="472" y="118" fill="#C8A96A" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="700" letter-spacing="7">مسار</text>
+</svg>

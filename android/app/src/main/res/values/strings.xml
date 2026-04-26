@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">MASAAR</string>
+    <string name="title_activity_main">MASAAR</string>
+    <string name="package_name">jo.masaar.intelligence</string>
+    <string name="custom_url_scheme">jo.masaar.intelligence</string>
+</resources>
