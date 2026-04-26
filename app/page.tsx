@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { Building2, Hotel, Landmark, Plane } from 'lucide-react';
 import { MasaarLogo } from '@/components/MasaarLogo';
 import { Role } from '@/data/mock';
@@ -82,12 +83,13 @@ export default function HomePage() {
             >
               {locale === 'ar' ? 'EN' : 'AR'}
             </button>
-            <button
+            <Link
+              href="/government"
               className="hidden min-h-11 rounded-full border border-[var(--line)] bg-[var(--card)] px-4 text-xs font-black uppercase tracking-[.16em] text-[var(--navy)] shadow-sm sm:inline-flex sm:items-center"
               onClick={() => choose('government', '/government')}
             >
               {t('signIn')}
-            </button>
+            </Link>
           </div>
         </header>
 
@@ -109,8 +111,9 @@ export default function HomePage() {
             {roles.map((role) => {
               const Icon = role.icon;
               return (
-                <button
+                <Link
                   key={role.id}
+                  href={role.href}
                   onClick={() => choose(role.id, role.href)}
                   className="group relative min-h-[190px] overflow-hidden rounded-2xl text-start text-white shadow-xl shadow-black/10 transition duration-200 active:scale-[.99]"
                 >
@@ -127,7 +130,7 @@ export default function HomePage() {
                       <span className="mt-5 inline-flex min-h-11 items-center text-sm font-black text-[#f2c66d]">{tx(role.access)} -&gt;</span>
                     </div>
                   </div>
-                </button>
+                </Link>
               );
             })}
           </div>
