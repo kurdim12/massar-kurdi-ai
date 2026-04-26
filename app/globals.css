@@ -31,6 +31,7 @@ html {
   min-height: 100%;
   overflow-x: hidden;
   background: var(--cream);
+  color-scheme: light dark;
 }
 
 body {
@@ -40,6 +41,7 @@ body {
   background: var(--cream);
   color: var(--navy);
   font-family: Manrope, Cairo, system-ui, sans-serif;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
   text-rendering: optimizeLegibility;
@@ -71,9 +73,9 @@ select {
 }
 
 .glass-card {
-  background: color-mix(in srgb, var(--card) 86%, transparent);
+  background: color-mix(in srgb, var(--card) 90%, transparent);
   border: 1px solid var(--line);
-  box-shadow: 0 14px 36px rgba(11, 31, 58, .07);
+  box-shadow: 0 18px 42px rgba(11, 31, 58, .08);
   backdrop-filter: blur(14px);
 }
 
@@ -95,8 +97,13 @@ select {
   color: var(--muted);
   font-size: 10px;
   font-weight: 900;
-  letter-spacing: .34em;
+  letter-spacing: .18em;
+  line-height: 1.35;
   text-transform: uppercase;
+}
+
+[dir="rtl"] .eyebrow {
+  letter-spacing: .04em;
 }
 
 button,
@@ -120,27 +127,35 @@ textarea:focus-visible {
   color: var(--navy);
   font-size: 28px;
   font-weight: 950;
-  letter-spacing: -.03em;
-  line-height: .96;
+  letter-spacing: 0;
+  line-height: 1.02;
 }
 
 .numeric {
   color: var(--navy);
   font-size: 42px;
   font-weight: 950;
-  letter-spacing: -.07em;
-  line-height: .9;
+  letter-spacing: 0;
+  line-height: .95;
 }
 
 .pill {
+  align-items: center;
   border: 1px solid var(--line);
   border-radius: 999px;
   color: var(--navy);
+  display: inline-flex;
   font-size: 10px;
   font-weight: 900;
-  letter-spacing: .26em;
-  padding: .45rem .8rem;
+  justify-content: center;
+  letter-spacing: .14em;
+  min-height: 38px;
+  padding: .45rem .85rem;
   text-transform: uppercase;
+}
+
+[dir="rtl"] .pill {
+  letter-spacing: .04em;
 }
 
 .pill-active {
@@ -152,16 +167,26 @@ textarea:focus-visible {
 .line-button {
   align-items: center;
   border: 1px solid var(--line);
-  border-radius: .55rem;
+  border-radius: .9rem;
   color: var(--navy);
   display: inline-flex;
   font-size: 11px;
   font-weight: 950;
+  gap: .5rem;
   justify-content: center;
-  letter-spacing: .24em;
-  min-height: 44px;
+  letter-spacing: .14em;
+  min-height: 46px;
   padding: .7rem 1rem;
   text-transform: uppercase;
+  transition: transform .18s ease, background-color .18s ease, border-color .18s ease, color .18s ease;
+}
+
+.line-button:active {
+  transform: scale(.98);
+}
+
+[dir="rtl"] .line-button {
+  letter-spacing: .04em;
 }
 
 .masaar-app {
@@ -194,6 +219,13 @@ canvas {
 .soft-panel {
   background: var(--card);
   border: 1px solid var(--line);
+}
+
+.surface-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  box-shadow: 0 10px 28px rgba(11, 31, 58, .055);
 }
 
 .warm-accent {
